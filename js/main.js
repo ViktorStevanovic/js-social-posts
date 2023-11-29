@@ -60,19 +60,27 @@ const containerElement = document.getElementById('container');
 
 singlePost();
 
-const likeElement = document.querySelectorAll('.like-button');
-let likedPosts = []
-likeElement.forEach((button, index) => {
-    button.addEventListener("click", () => {
 
-        button.classList.toggle("liked");
-        const likecounter = document.querySelector(`#like-counter-${index}`);
-        console.log(likecounter)
-        if(button.classList.contains('clicked')){
-            
-        }        
-})
-})
+const likeButtonsList = containerElement.querySelectorAll('a.like-button.js-like-button');
+const likeCountersList = containerElement.querySelectorAll('b.js-likes-counter');
+
+for (let index = 0; index < likeButtonsList.length; index++) {
+
+    const currentLikeButton = likeButtonsList[index];
+    currentLikeButton.addEventListener('click', function( event ){
+        event.preventDefault();
+
+        if (currentLikeButton.classList.contains('liked')){
+            currentLikeButton.classList.remove('liked');
+            likeCountersList[index].innerHTML = parseInt(likeCountersList[index].innerHTML, 10) - 1;
+        } else {
+            currentLikeButton.classList.add('liked');
+            likeCountersList[index].innerHTML = parseInt(likeCountersList[index].innerHTML, 10) + 1;
+        }
+    });
+}
+
+
 
 function singlePost(){
     for(let i = 0; i < posts.length;i++){
@@ -96,7 +104,7 @@ function singlePost(){
         <div class="post__footer">
             <div class="likes js-likes">
                 <div class="likes__cta">
-                    <a class="like-button  js-like-button" data-postid="1">
+                    <a class="like-button  js-like-button" data-postid="${posts[i].id}">
                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                         <span class="like-button__label">Mi Piace</span>
                     </a>
